@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from './utils/middlewares/logger.middleware';
+import { CustomConfigModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { LoggerMiddleware } from './utils/middlewares/logger.middleware';
       isGlobal: true,
       envFilePath: ['.env'],
     }),
+    CustomConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
