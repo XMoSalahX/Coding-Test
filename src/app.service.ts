@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { EnumsResponse } from './utils/constants';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  serverChecking(): string {
+    return EnumsResponse.SERVER_WORKING;
   }
 }
