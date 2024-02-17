@@ -20,7 +20,7 @@ async function bootstrap() {
     },
   };
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document, customOptions);
+  SwaggerModule.setup(process.env.SWAGGER_ROUTE, app, document, customOptions);
 
   SwaggerModule.setup(process.env.SWAGGER_ROUTE, app, document, customOptions);
 
