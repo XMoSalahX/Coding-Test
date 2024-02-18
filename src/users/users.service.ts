@@ -8,7 +8,6 @@ export class UsersService {
   constructor(private readonly userRepository: UsersRepository) {}
 
   async create(createPostDto: CreateUserDto) {
-    console.log('s');
     return await this.userRepository.createBase(createPostDto);
   }
 

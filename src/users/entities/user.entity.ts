@@ -6,11 +6,11 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   userName: string;
 
   @Column()
-  FirstName: string;
+  firstName: string;
 
   @Column()
   lastName: string;

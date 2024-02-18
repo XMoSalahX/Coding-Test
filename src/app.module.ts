@@ -7,6 +7,8 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import * as dotenv from 'dotenv';
+import { AllExceptionsFilter } from './utils/exception.filter';
+import { APP_FILTER } from '@nestjs/core';
 
 dotenv.config();
 
@@ -21,7 +23,13 @@ dotenv.config();
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
