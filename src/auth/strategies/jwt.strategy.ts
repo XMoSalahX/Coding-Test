@@ -12,12 +12,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  //   async validate(payload: any) {
-  //     // Fetch user details from the database based on the JWT payload
-  //     const user = await this.usersService.findById(payload.sub);
-  //     if (!user) {
-  //       throw new UnauthorizedException();
-  //     }
-  //     return user;
-  //   }
+  async validate(payload: any) {
+    // Fetch user details from the database based on the JWT payload
+    const user = await this.usersService.findById(payload.sub);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    return user;
+  }
 }

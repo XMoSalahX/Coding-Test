@@ -4,6 +4,16 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Injectable()
 export class AuthService {
+  async validateUser(payload: any) {
+    // Implement logic to validate user based on JWT payload
+    return { userId: payload.sub, username: payload.username };
+  }
+
+  async login(user: any) {
+    // Implement login logic and generate JWT token
+    return { access_token: 'generated_jwt_token' };
+  }
+
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
   }

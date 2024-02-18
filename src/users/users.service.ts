@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './user.repository';
+import { Connection } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UsersRepository) {}
+  constructor(
+    private readonly userRepository: UsersRepository,
+    private connection: Connection,
+  ) {}
 
   async create(createPostDto: CreateUserDto) {
     return await this.userRepository.createBase(createPostDto);
@@ -14,9 +18,17 @@ export class UsersService {
   findAll() {
     return `This action returns all users`;
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findById(id: number) {
+    try {
+      const doc = await this.userRepository.findOne({ where: { id } });
+      if (!doc) {
+        throw new Error(`User with ID ${id} not found`);
+      }
+      return doc;
+    } catch (error) {
+      console.error('Error finding user:', error.message);
+      throw error;
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
