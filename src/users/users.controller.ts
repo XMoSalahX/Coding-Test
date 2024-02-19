@@ -5,6 +5,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { AuthUser } from 'src/auth/decorators/user.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserTypeEnum } from './enums/usertype';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -23,8 +26,10 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Roles(UserTypeEnum.ADMIN, UserTypeEnum.EDITOR)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  update(@Body() updateUserDto: UpdateUserDto, @AuthUser() user, @Param('id') id: number) {
+    console.log(user);
+    return this.usersService.update(updateUserDto, user, id);
   }
 }

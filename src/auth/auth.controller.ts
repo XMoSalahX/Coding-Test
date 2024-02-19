@@ -16,6 +16,7 @@ export class AuthController {
     @Headers()
     headers: LoginValidationDto,
   ) {
+    console.log('Ss');
     return this.authService.login(headers);
   }
 }
