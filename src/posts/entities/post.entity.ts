@@ -17,8 +17,19 @@ export class Posts {
   content: string;
 
   @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  timestamp: Date;
+  timestamp?: Date;
+
+  @Column({
+    type: Number,
+  })
+  authorId: number;
+
+  @Column({
+    type: Boolean,
+    default: true,
+  })
+  status: boolean;
 
   @ManyToOne(() => User, user => user.id)
-  auther: User;
+  author: User;
 }
