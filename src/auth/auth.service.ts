@@ -1,17 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { UsersService } from 'src/users/users.service';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  async validateUser(payload: any) {
-    // Implement logic to validate user based on JWT payload
-    return { userId: payload.sub, username: payload.username };
+  constructor(
+    private usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async validateUser(payload: JwtPayload): Promise<any> {
+    return await this.usersService.findOne({ username: payload.userName });
   }
 
-  async login(user: any) {
-    // Implement login logic and generate JWT token
-    return { access_token: 'generated_jwt_token' };
+  async login(user: { username: string; password: string }) {
+    const { username, password } = user;
+    const userFromDb = await this.usersService.findOne({ username, password });
+    const payload: JwtPayload = { userName: user.username, password: userFromDb.password };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 
   create(createAuthDto: CreateAuthDto) {

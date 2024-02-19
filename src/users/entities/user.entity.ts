@@ -7,7 +7,7 @@ export class User {
   id: number;
 
   @Column({ unique: true })
-  userName: string;
+  username: string;
 
   @Column()
   firstName: string;
@@ -21,4 +21,7 @@ export class User {
     default: UserTypeEnum.READER,
   })
   userType: UserTypeEnum;
+
+  @Column()
+  password: string;
 }

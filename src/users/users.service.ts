@@ -1,28 +1,31 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './user.repository';
-import { Connection } from 'typeorm';
+// import { Connection } from 'typeorm';
+import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly userRepository: UsersRepository,
-    private connection: Connection,
+    // private readonly connection: Connection,
   ) {}
 
-  async create(createPostDto: CreateUserDto) {
-    return await this.userRepository.createBase(createPostDto);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    createUserDto.password = await bcrypt.hash(createUserDto.password, parseInt(process.env.SALT_ROUND));
+    return await this.userRepository.createBase(createUserDto);
   }
 
   findAll() {
     return `This action returns all users`;
   }
-  async findById(id: number) {
+  async findOne(filter: { id?: number; username?: string; password?: string }) {
     try {
-      const doc = await this.userRepository.findOne({ where: { id } });
+      const doc: User = await this.userRepository.findOne({ where: filter });
       if (!doc) {
-        throw new Error(`User with ID ${id} not found`);
+        throw new UnauthorizedException(`User ${filter?.id ? filter?.id : filter.username} not found`);
       }
       return doc;
     } catch (error) {
