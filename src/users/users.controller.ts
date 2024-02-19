@@ -8,6 +8,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { AuthUser } from 'src/auth/decorators/user.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserTypeEnum } from './enums/usertype';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -15,11 +16,14 @@ import { UserTypeEnum } from './enums/usertype';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserTypeEnum.ADMIN, UserTypeEnum.EDITOR)
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.usersService.findOne({ id });
@@ -29,7 +33,6 @@ export class UsersController {
   @Roles(UserTypeEnum.ADMIN, UserTypeEnum.EDITOR)
   @Patch(':id')
   update(@Body() updateUserDto: UpdateUserDto, @AuthUser() user, @Param('id') id: number) {
-    console.log(user);
     return this.usersService.update(updateUserDto, user, id);
   }
 }

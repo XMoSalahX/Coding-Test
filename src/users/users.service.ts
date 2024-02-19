@@ -4,6 +4,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { UserTypeEnum } from './enums/usertype';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -45,8 +47,14 @@ export class UsersService {
   }
 
   async update(updateUserDto: UpdateUserDto, user: User, id: number) {
-    console.log(user);
-    const userFromDb: User = await this.userRepository.findOne({ where: { id } });
+    let userFromDb: User;
+    if (user.userType === UserTypeEnum.ADMIN) {
+      userFromDb = await this.userRepository.findOne({ where: { id } });
+    } else {
+      // if role not admin get editor only
+      userFromDb = await this.userRepository.findOne({ where: { id, userType: Not(UserTypeEnum.ADMIN) } });
+    }
+
     if (!userFromDb) {
       throw new Error(`User not found`);
     }
