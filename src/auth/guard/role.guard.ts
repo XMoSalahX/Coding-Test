@@ -12,7 +12,6 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
-    console.log('roles', roles);
 
     if (!roles || !roles.length) {
       return true;
@@ -27,7 +26,8 @@ export class RolesGuard implements CanActivate {
       const decodedToken = this.jwtService.verify(token); // Verify and decode the JWT token
       const user = decodedToken.user; // Assuming user information is stored in the 'user' property of the decoded token
       request.user = user; // Attach the user information to the request object for future use
-      if (!roles.find(item => item === decodedToken.userType)) {
+      console.log(!roles.find(item => item === decodedToken.userType));
+      if (!!roles.find(item => item === decodedToken.userType)) {
         throw new ForbiddenException('You do not have permission to access this resource.');
       }
       return true;

@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import * as dotenv from 'dotenv';
 import { AllExceptionsFilter } from './utils/exception.filter';
 import { APP_FILTER } from '@nestjs/core';
+import { PostsModule } from './posts/posts.module';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ dotenv.config();
     DatabaseModule,
     AuthModule,
     UsersModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [
