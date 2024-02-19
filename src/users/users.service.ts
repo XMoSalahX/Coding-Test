@@ -21,10 +21,11 @@ export class UsersService {
   findAll() {
     return `This action returns all users`;
   }
-  async findOne(filter: { id?: number; username?: string; password?: string }) {
+  async findOne(filter: { id?: number; username?: string }, password?: string) {
     try {
       const doc: User = await this.userRepository.findOne({ where: filter });
-      if (!doc) {
+      const isValid = await bcrypt.compare(password, doc.password);
+      if (!isValid) {
         throw new UnauthorizedException(`User ${filter?.id ? filter?.id : filter.username} not found`);
       }
       return doc;
@@ -36,9 +37,5 @@ export class UsersService {
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }
