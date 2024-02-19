@@ -5,14 +5,11 @@ import { UsersRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UserTypeEnum } from './enums/usertype';
-import { Connection, Not } from 'typeorm';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly userRepository: UsersRepository,
-    private connection: Connection,
-  ) {}
+  constructor(private readonly userRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     createUserDto.password = await bcrypt.hash(createUserDto.password, parseInt(process.env.SALT_ROUND));
@@ -23,8 +20,22 @@ export class UsersService {
     return `This action returns all users`;
   }
   async findOneJWT(filter: { id?: number; username?: string }, password?: string): Promise<User> {
+    console.log(filter);
     try {
-      const doc: User = await this.userRepository.findOne({ where: filter, relations: ['posts'] });
+      const queryBuilder = this.userRepository
+        .createQueryBuilder('user')
+        .leftJoinAndSelect('user.posts', 'posts', 'posts.status = :status')
+        .setParameter('status', true); // Set the status parameter once
+
+      // Conditionally add the 'where' clause based on the properties of the filter
+      if (filter.id !== undefined) {
+        queryBuilder.andWhere('user.id = :id', { id: filter.id });
+      }
+      if (filter.username !== undefined) {
+        queryBuilder.andWhere('user.username = :username', { username: filter.username });
+      }
+
+      const doc = await queryBuilder.getOne();
 
       const isValid = await bcrypt.compare(password, doc.password);
       if (!isValid) {
