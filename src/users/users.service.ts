@@ -21,7 +21,7 @@ export class UsersService {
   findAll() {
     return `This action returns all users`;
   }
-  async findOne(filter: { id?: number; username?: string }, password?: string) {
+  async findOne(filter: { id?: number; username?: string }, password?: string): Promise<User> {
     try {
       const doc: User = await this.userRepository.findOne({ where: filter });
       const isValid = await bcrypt.compare(password, doc.password);
