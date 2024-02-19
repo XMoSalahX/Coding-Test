@@ -58,6 +58,28 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Env
+
+POSTGRES_USER=postgres
+
+POSTGRES_PASSWORD=postgres
+
+POSTGRES_DB=test
+
+POSTGRES_PORT=5432
+
+POSTGRES_HOST=localhost
+
+SWAGGER_ROUTE=api
+
+SERVER_PORT=3000
+
+SECRET_KEY=fortestcode
+
+BCRYPT_PASSWORD=testajsdalk
+
+SALT_ROUND=10
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
