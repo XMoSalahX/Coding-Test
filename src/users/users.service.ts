@@ -5,11 +5,14 @@ import { UsersRepository } from './user.repository';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UserTypeEnum } from './enums/usertype';
-import { Not } from 'typeorm';
+import { Connection, Not } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UsersRepository) {}
+  constructor(
+    private readonly userRepository: UsersRepository,
+    private connection: Connection,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     createUserDto.password = await bcrypt.hash(createUserDto.password, parseInt(process.env.SALT_ROUND));
@@ -21,8 +24,8 @@ export class UsersService {
   }
   async findOneJWT(filter: { id?: number; username?: string }, password?: string): Promise<User> {
     try {
-      const doc: User = await this.userRepository.findOne({ where: filter });
-      console.log(password);
+      const doc: User = await this.userRepository.findOne({ where: filter, relations: ['posts'] });
+
       const isValid = await bcrypt.compare(password, doc.password);
       if (!isValid) {
         throw new UnauthorizedException(`User ${filter?.id ? filter?.id : filter.username} not found`);
@@ -36,7 +39,6 @@ export class UsersService {
 
   async findOne(filter: { id?: number; username?: string; password?: string }): Promise<User> {
     try {
-      console.log(filter);
       const doc: User = await this.userRepository.findOne({ where: filter });
       if (!doc) throw new UnauthorizedException(`User ${filter?.id ? filter?.id : filter.username} not found`);
       return doc;

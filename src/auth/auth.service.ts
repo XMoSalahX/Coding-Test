@@ -24,8 +24,10 @@ export class AuthService {
       password: userFromDb.password,
       userType: userFromDb.userType,
     };
+
     return {
       access_token: this.jwtService.sign(payload),
+      body: userFromDb,
     };
   }
 }

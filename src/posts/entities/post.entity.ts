@@ -30,6 +30,6 @@ export class Posts {
   })
   status: boolean;
 
-  @ManyToOne(() => User, user => user.id)
+  @ManyToOne(() => User, user => user.posts)
   author: User;
 }
