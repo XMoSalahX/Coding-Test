@@ -25,7 +25,7 @@ export class UsersService {
       const queryBuilder = this.userRepository
         .createQueryBuilder('user')
         .leftJoinAndSelect('user.posts', 'posts', 'posts.status = :status')
-        .setParameter('status', true); // Set the status parameter once
+        .setParameter('status', true);
 
       // Conditionally add the 'where' clause based on the properties of the filter
       if (filter.id !== undefined) {

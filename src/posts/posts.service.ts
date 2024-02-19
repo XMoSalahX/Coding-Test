@@ -19,27 +19,27 @@ export class PostsService {
 
   async findAll(user: User, id?: number): Promise<Posts[]> {
     if (user.userType === UserTypeEnum.READER) {
-      return await this.postRepository.find({ where: { authorId: user.id } });
+      return await this.postRepository.find({ where: { authorId: user.id, status: true } });
     } else {
-      return await this.postRepository.find({ where: { authorId: id ? id : user.id } });
+      return await this.postRepository.find({ where: { authorId: id || user.id, status: true } });
     }
   }
 
   async findOne(user: User, id?: number): Promise<Posts> {
     if (user.userType === UserTypeEnum.READER) {
-      return await this.postRepository.findOne({ where: { id, authorId: user.id } });
+      return await this.postRepository.findOne({ where: { id, authorId: user.id, status: true } });
     } else {
-      return await this.postRepository.findOne({ where: { id } });
+      return await this.postRepository.findOne({ where: { id, status: true } });
     }
   }
 
   async update(user: User, id: number, updatePostDto: UpdatePostDto): Promise<Posts> {
     let postFromDb: Posts;
     if (user.userType === UserTypeEnum.ADMIN || user.userType === UserTypeEnum.EDITOR) {
-      postFromDb = await this.postRepository.findOne({ where: { id } });
+      postFromDb = await this.postRepository.findOne({ where: { id, status: true } });
     } else {
       // if Reader only
-      postFromDb = await this.postRepository.findOne({ where: { id, authorId: user.id } });
+      postFromDb = await this.postRepository.findOne({ where: { id, authorId: user.id, status: true } });
     }
 
     if (!postFromDb) {
@@ -55,10 +55,10 @@ export class PostsService {
   async remove(user: User, id: number) {
     let postFromDb: Posts;
     if (user.userType === UserTypeEnum.ADMIN || user.userType === UserTypeEnum.EDITOR) {
-      postFromDb = await this.postRepository.findOne({ where: { id } });
+      postFromDb = await this.postRepository.findOne({ where: { id, status: true } });
     } else {
       // if Reader only
-      postFromDb = await this.postRepository.findOne({ where: { id, authorId: user.id } });
+      postFromDb = await this.postRepository.findOne({ where: { id, authorId: user.id, status: true } });
     }
 
     if (!postFromDb) {
