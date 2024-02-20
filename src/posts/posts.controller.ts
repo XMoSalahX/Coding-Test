@@ -37,11 +37,15 @@ export class PostsController {
     return this.postsService.findOne(user, id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserTypeEnum.ADMIN, UserTypeEnum.EDITOR)
   @Patch(':id')
   update(@AuthUser() user, @Param('id') id: number, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(user, id, updatePostDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserTypeEnum.ADMIN, UserTypeEnum.EDITOR)
   @Delete(':id')
   async remove(@AuthUser() user, @Param('id') id: number): Promise<string> {
     await this.postsService.remove(user, id);

@@ -5,7 +5,6 @@ import { PostsRepository } from './post.repository';
 import { User } from 'src/users/entities/user.entity';
 import { Posts } from './entities/post.entity';
 import { UserTypeEnum } from 'src/users/enums/usertype';
-import { Not } from 'typeorm';
 
 @Injectable()
 export class PostsService {
