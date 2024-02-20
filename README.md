@@ -80,6 +80,33 @@ BCRYPT_PASSWORD=testajsdalk
 
 SALT_ROUND=10
 
+# Technical Notes
+
+## Server Environment
+
+- **Node.js version:** v20.5.1
+- **NestJS version:** 10.3.2
+- **TypeScript version:** 5.1.6
+- **PostgreSQL version:** 16.2
+
+## Server Extra Features
+
+Note: All features mentioned in the requirements are included.
+
+- The server contains a base abstract class to handle repositories with repeated operations.
+- An exception handler is implemented to extract useful errors in the response.
+- Logging is performed using Winston with log files created per day.
+- The server handles graceful shutdown correctly.
+
+## Business Logic
+
+- There are three user types in the system: ADMIN, EDITOR, and Reader.
+- When a user logs in, they retrieve their documents and posts if they exist.
+- Admins can access all features.
+- Editors can't modify admin users but can perform any update or removal operation on the entire app.
+- Users can only read.
+
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
