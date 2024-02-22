@@ -4,11 +4,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
-import { AuthUser } from 'src/auth/decorators/user.decorator';
-import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserTypeEnum } from './enums/usertype';
-import { Public } from 'src/auth/decorators/public.decorator';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { AuthUser } from '../auth/decorators/user.decorator';
+import { Public } from '../auth/decorators/public.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth()

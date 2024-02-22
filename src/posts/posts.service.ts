@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsRepository } from './post.repository';
-import { User } from 'src/users/entities/user.entity';
 import { Posts } from './entities/post.entity';
-import { UserTypeEnum } from 'src/users/enums/usertype';
+import { User } from '../users/entities/user.entity';
+import { UserTypeEnum } from '../users/enums/usertype';
 
 @Injectable()
 export class PostsService {

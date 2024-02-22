@@ -3,11 +3,11 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
-import { UserTypeEnum } from 'src/users/enums/usertype';
-import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Posts } from './entities/post.entity';
-import { AuthUser } from 'src/auth/decorators/user.decorator';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { UserTypeEnum } from '../users/enums/usertype';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { AuthUser } from '../auth/decorators/user.decorator';
 
 @ApiTags('Posts')
 @ApiBearerAuth()

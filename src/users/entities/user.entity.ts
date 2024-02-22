@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserTypeEnum } from '../enums/usertype';
-import { Posts } from 'src/posts/entities/post.entity';
+import { Posts } from '../../posts/entities/post.entity';
 
 @Entity()
 export class User {

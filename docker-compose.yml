@@ -7,9 +7,17 @@ services:
     environment:
       POSTGRES_USER: postgres # PostgreSQL username
       POSTGRES_PASSWORD: postgres # PostgreSQL password
-      POSTGRES_DB: test # PostgreSQL database name
+      POSTGRES_DB: posts # PostgreSQL database name
     ports:
       - '5432:5432' # Expose PostgreSQL port
+  postgres-test:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres # PostgreSQL username
+      POSTGRES_PASSWORD: postgres # PostgreSQL password
+      POSTGRES_DB: posts-test # PostgreSQL database name
+    ports:
+      - '5433:5432' # Expose PostgreSQL port
 
   # NestJS Application Service
   nestjs-app:
